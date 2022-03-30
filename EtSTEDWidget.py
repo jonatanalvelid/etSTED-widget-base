@@ -3,7 +3,7 @@ import os
 import napari
 import pyqtgraph as pg
 from napari.utils.translations import trans
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 
 class EtSTEDWidget(QtWidgets.QWidget):
@@ -16,24 +16,24 @@ class EtSTEDWidget(QtWidgets.QWidget):
         
         # generate dropdown list for analysis pipelines
         self.analysisPipelines = list()
-        self.analysisPipelinePar = QtGui.QComboBox()
+        self.analysisPipelinePar = QtWidgets.QComboBox()
         # generate dropdown list for coordinate transformations
         self.transformPipelines = list()
-        self.transformPipelinePar = QtGui.QComboBox()
+        self.transformPipelinePar = QtWidgets.QComboBox()
         # generate dropdown list for fast imaging detectors
         self.fastImgDetectors = list()
-        self.fastImgDetectorsPar = QtGui.QComboBox()
-        self.fastImgDetectorsPar_label = QtGui.QLabel('Fast detector')
+        self.fastImgDetectorsPar = QtWidgets.QComboBox()
+        self.fastImgDetectorsPar_label = QtWidgets.QLabel('Fast detector')
         self.fastImgDetectorsPar_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
         # generate dropdown list for fast imaging lasers
         self.fastImgLasers = list()
-        self.fastImgLasersPar = QtGui.QComboBox()
-        self.fastImgLasersPar_label = QtGui.QLabel('Fast laser')
+        self.fastImgLasersPar = QtWidgets.QComboBox()
+        self.fastImgLasersPar_label = QtWidgets.QLabel('Fast laser')
         self.fastImgLasersPar_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
         # add all experiment modes in a dropdown list
         self.experimentModes = ['Experiment','TestVisualize','TestValidate']
-        self.experimentModesPar = QtGui.QComboBox()
-        self.experimentModesPar_label = QtGui.QLabel('Experiment mode')
+        self.experimentModesPar = QtWidgets.QComboBox()
+        self.experimentModesPar_label = QtWidgets.QLabel('Experiment mode')
         self.experimentModesPar_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignCenter)
         self.experimentModesPar.addItems(self.experimentModes)
         self.experimentModesPar.setCurrentIndex(0)
@@ -42,7 +42,7 @@ class EtSTEDWidget(QtWidgets.QWidget):
         self.param_edits = list()
         # create buttons for initiating the event-triggered imaging and loading the pipeline
         self.initiateButton = QtWidgets.QPushButton('Initiate etSTED')
-        self.initiateButton.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        self.initiateButton.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         self.loadPipelineButton = QtWidgets.QPushButton('Load pipeline')
         # create buttons for calibrating coordinate transform, recording binary mask, loading scan params
         self.coordTransfCalibButton = QtWidgets.QPushButton('Transform calibration')
@@ -51,21 +51,21 @@ class EtSTEDWidget(QtWidgets.QWidget):
         # creat button for unlocking any softlock happening
         self.setBusyFalseButton = QtWidgets.QPushButton('Unlock softlock')
         # create check box for endless running mode
-        self.endlessScanCheck = QtGui.QCheckBox('Endless')
+        self.endlessScanCheck = QtWidgets.QCheckBox('Endless')
         # create editable fields for binary mask calculation threshold and smoothing
-        self.bin_thresh_label = QtGui.QLabel('Bin. threshold')
+        self.bin_thresh_label = QtWidgets.QLabel('Bin. threshold')
         self.bin_thresh_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.bin_thresh_edit = QtGui.QLineEdit(str(10))
-        self.bin_smooth_label = QtGui.QLabel('Bin. smooth (px)')
+        self.bin_thresh_edit = QtWidgets.QLineEdit(str(10))
+        self.bin_smooth_label = QtWidgets.QLabel('Bin. smooth (px)')
         self.bin_smooth_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.bin_smooth_edit = QtGui.QLineEdit(str(2))
+        self.bin_smooth_edit = QtWidgets.QLineEdit(str(2))
         # help widget for coordinate transform
         self.coordTransformWidget = CoordTransformWidget(*args, **kwargs)
 
         # help widget for showing images from the analysis pipelines, i.e. binary masks or analysed images in live
         self.analysisHelpWidget = AnalysisWidget(*args, **kwargs)
 
-        self.grid = QtGui.QGridLayout()
+        self.grid = QtWidgets.QGridLayout()
         self.setLayout(self.grid)
 
         # initialize widget controls
@@ -125,9 +125,9 @@ class EtSTEDWidget(QtWidgets.QWidget):
         for pipeline_param_name, pipeline_param_val in parameters.items():
             if pipeline_param_name not in params_exclude:
                 # create param for input
-                param_name = QtGui.QLabel('{}'.format(pipeline_param_name))
+                param_name = QtWidgets.QLabel('{}'.format(pipeline_param_name))
                 param_value = pipeline_param_val.default if pipeline_param_val.default is not pipeline_param_val.empty else 0
-                param_edit = QtGui.QLineEdit(str(param_value))
+                param_edit = QtWidgets.QLineEdit(str(param_value))
                 # add param name and param to grid
                 self.grid.addWidget(param_name, currentRow, 0)
                 self.grid.addWidget(param_edit, currentRow, 1)
@@ -189,10 +189,10 @@ class AnalysisWidget(QtWidgets.QWidget):
         self.imgVb.addItem(self.img)
         self.imgVb.setAspectLocked(True)
 
-        self.info_label = QtGui.QLabel('<image info>')
+        self.info_label = QtWidgets.QLabel('<image info>')
         
         # generate GUI layout
-        self.grid = QtGui.QGridLayout()
+        self.grid = QtWidgets.QGridLayout()
         self.setLayout(self.grid)
 
         self.grid.addWidget(self.info_label, 0, 0)
@@ -219,7 +219,7 @@ class CoordTransformWidget(QtWidgets.QWidget):
         
 
         # generate GUI layout
-        self.grid = QtGui.QGridLayout()
+        self.grid = QtWidgets.QGridLayout()
         self.setLayout(self.grid)
     
         currentRow = 0

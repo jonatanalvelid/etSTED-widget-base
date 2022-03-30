@@ -3,6 +3,7 @@ import glob
 import sys
 import importlib
 import enum
+import warnings
 from collections import deque
 from datetime import datetime
 from inspect import signature
@@ -12,6 +13,8 @@ import h5py
 import scipy.ndimage as ndi
 import numpy as np
 from scipy.optimize import least_squares
+
+warnings.filterwarnings("ignore")
 
 # TODO: change this to preferred path for saved logs
 _logsDir = os.path.join('C:\\etSTED', 'recordings', 'logs_etsted')
