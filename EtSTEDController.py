@@ -18,8 +18,6 @@ warnings.filterwarnings("ignore")
 
 # TODO: change this to preferred path for saved logs
 _logsDir = os.path.join('C:\\etSTED', 'recordings', 'logs_etsted')
-# TODO: change this to path for pipelines and transformation files
-_etstedDir = os.path.join('C:\\etSTED', 'imcontrol_etsted')
 
 
 class EtSTEDController():
@@ -31,11 +29,11 @@ class EtSTEDController():
         print('Initializing etSTED controller')
 
         # folders for analysis pipelines and transformations
-        self.analysisDir = os.path.join(_etstedDir, 'analysis_pipelines')
+        self.analysisDir = os.path.join('analysis_pipelines')
         if not os.path.exists(self.analysisDir):
             os.makedirs(self.analysisDir)
         sys.path.append(self.analysisDir)
-        self.transformDir = os.path.join(_etstedDir, 'transform_pipelines')
+        self.transformDir = os.path.join('transform_pipelines')
         if not os.path.exists(self.transformDir):
             os.makedirs(self.transformDir)
         sys.path.append(self.transformDir)
@@ -85,7 +83,7 @@ class EtSTEDController():
         self.__binary_frames = 10  # number of frames to use for calculating binary mask 
         self.__init_frames = 5  # number of frames after initiating etSTED before a trigger can occur, to allow laser power settling etc
         self.__validation_frames = 5  # number of fast frames to record after detecting an event in validation mode
-        self.__params_exclude = ['img', 'bkg', 'binary_mask', 'exinfo', 'testmode']  # excluded pipeline parameters when loading param fields
+        self.__params_exclude = ['img', 'prev_frames', 'binary_mask', 'exinfo', 'testmode']  # excluded pipeline parameters when loading param fields
 
     def initiate(self):
         """ Initiate or stop an etSTED experiment. """
@@ -258,10 +256,11 @@ class EtSTEDController():
 
     def getScanParameters(self):
         """ Get scan parameters (size (per axis), pixel size (per axis), dwell time etc) from a scanning widget/scan part of software. """
+        # mock: assign mock scan parameters
         self._scanParameterDict = {
             'target_device': ['X-galvo', 'Y-galvo'],
-            'axis_size': [5,5],
-            'axis_centerpos': [0,0],
+            'axis_size': [5.0, 5.0],
+            'axis_centerpos': [0.0, 0.0],
             'axis_pixel_size': [0.03, 0.03],
             'dwell_time': 0.03
         }
@@ -391,7 +390,6 @@ class EtSTEDController():
             # unset busy flag
             self.setBusyFalse()
 
-
     def initiateSlowScan(self, position=[0.0,0.0]):
         """ Initiate a STED scan. """
         # change the center coordinate of the scan parameters to the detected positions
@@ -430,10 +428,12 @@ class EtSTEDController():
     def saveValidationImages(self, prev=True, prev_ana=True):
         """ Save the validation fast images of an event detection, fast images and/or preprocessed analysis images. """
         if prev:
-            # TODO: save detectorFast frames leading up to event #xxx.sigSaveImage.emit(self.detectorFast, np.array(list(self.__prevFrames)), 'raw') # (detector, imagestack, name_suffix)
+            # TODO: save detectorFast frames leading up to event
+            # #xxx.sigSaveImage.emit(self.detectorFast, np.array(list(self.__prevFrames)))  # (detector, imagestack)
             self.__prevFrames.clear()
         if prev_ana:
-            # TODO: save preprocessed frames leading up to event #xxx.sigSaveImage.emit(self.detectorFast, np.array(list(self.__prevAnaFrames)), 'ana') # (detector, imagestack, name_suffix)
+            # TODO: save preprocessed detectorFast frames leading up to event
+            # #xxx.sigSaveImage.emit(self.detectorFast, np.array(list(self.__prevAnaFrames)))  # (detector, imagestack)
             self.__prevAnaFrames.clear()
 
     def pauseFastModality(self):
@@ -443,9 +443,6 @@ class EtSTEDController():
             self.camImgWorker.newFrame.disconnect(self.runPipeline)  # mock: directly from mock camera worker
             # TODO: turn off fast laser xxx.lasersManager.laserFast.setEnabled(False)
             self.__running = False
-
-    def closeEvent(self):
-        pass
 
 
 class EtSTEDCoordTransformHelper():
@@ -494,7 +491,6 @@ class EtSTEDCoordTransformHelper():
             self.__hiResCoords.append(pos)
         # calibrate coordinate transform
         self.coordinateTransformCalibrate()
-        print(f'Transformation coeffs: {self.__transformCoeffs}')
         name = datetime.utcnow().strftime('%Hh%Mm%Ss%fus')
         filename = os.path.join(self.__saveFolder, name) + '_transformCoeffs.txt'
         np.savetxt(fname=filename, X=self.__transformCoeffs)
@@ -525,8 +521,7 @@ class EtSTEDCoordTransformHelper():
         # load img data from file
         with h5py.File(img_filename, "r") as f:
             img_key = list(f.keys())[0]
-            pixelsize = f.attrs['element_size_um'][1]
-            print(pixelsize)
+            pixelsize = f.attrs['element_size_um'][1]  # adapt if different key
             img_data = np.array(f[img_key])
             imgsize = pixelsize*np.size(img_data,0)
         # view data in corresponding viewbox

@@ -3,6 +3,7 @@
 
 See [etSTED-widget](https://github.com/jonatanalvelid/etSTED-widget) for a full description of the functionality, and detailed explanation of the provided detection pipelines and coordinate transformations.
 
+See [ImSwitch](https://github.com/kasasxav/ImSwitch) for a full control software with this etSTED widget and controller integrated, as used in Alvelid et al. 2022. 
 -----
 
 # etSTED-widget-base
