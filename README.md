@@ -4,6 +4,7 @@
 See [etSTED-widget](https://github.com/jonatanalvelid/etSTED-widget) for a full description of the functionality, and detailed explanation of the provided detection pipelines and coordinate transformations.
 
 See [ImSwitch](https://github.com/kasasxav/ImSwitch) for a full control software with this etSTED widget and controller integrated, as used in Alvelid et al. 2022. 
+
 -----
 
 # etSTED-widget-base
@@ -18,4 +19,4 @@ pip install -r requirements.txt
 ```
 
 ## Development and implementation in control software
-In order to implement this widget into your control software of choice, change the code lines that are TODO-marked and commented to the implementations specific to your control software. This includes for example signals for receiving the recently acquired fast imaging images, for knowing when the scanned image has finished, or for turning on/off the fast imaging laser. 
+In order to implement this widget into your control software of choice, change the lines that are TODO-marked and commented to the control implementations specific to your control software. This includes for example signals for receiving the recently acquired fast imaging images, for knowing when the scanned image has finished, or for turning on/off the fast imaging laser. 
