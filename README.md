@@ -16,3 +16,6 @@ To run the etSTED-widget as a standalone widget, or to implement it in your own 
 ```
 pip install -r requirements.txt
 ```
+
+## Development and implementation in control software
+In order to implement this widget into your control software of choice, change the code lines that are TODO-marked and commented to the implementations specific to your control software. This includes for example signals for receiving the recently acquired fast imaging images, for knowing when the scanned image has finished, or for turning on/off the fast imaging laser. 
