@@ -118,7 +118,6 @@ def bapta_calcium_spikes_cpu(img, prev_frames=None, binary_mask=None, testmode=F
     num_peaks = np.int(num_peaks)
     if len(coordinates) > num_peaks:
         coordinates = coordinates[:num_peaks]
-    coordinates = np.flip(coordinates,axis=1)
         
     if testmode:
         return coordinates, exinfo, img_ana
