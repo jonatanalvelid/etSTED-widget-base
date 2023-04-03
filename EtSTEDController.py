@@ -517,7 +517,7 @@ class EtSTEDCoordTransformHelper():
     def loadCalibImage(self, modality):
         """ Load low or high resolution calibration image. """
         # open gui to choose file
-        img_filename = self.openFolder()
+        img_filename = self.findFile()
         # load img data from file
         with h5py.File(img_filename, "r") as f:
             img_key = list(f.keys())[0]
